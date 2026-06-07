@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Wedge Book">
+<meta name="theme-color" content="#0b120e">
+<title>Wedge Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=JetBrains+Mono:wght@400;600;700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b120e;
+  --panel:#111b15;
+  --panel2:#16221b;
+  --hair:rgba(255,255,255,0.08);
+  --text:#eaf2ec;
+  --dim:#85998c;
+  --lime:#dcff4a;
+  --teal:#52e6c6;
+  --amber:#ffb454;
+  --blue:#7cc6ff;
+  --green:#7ce38b;
+  --red:#ff7a6b;
+  --font-head:'Archivo',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --font-body:'Hanken Grotesk',sans-serif;
+}
+html,body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  min-height:100dvh;
+  -webkit-tap-highlight-color:transparent;
+}
+body{
+  background-image:
+    radial-gradient(ellipse 70% 30% at 50% 0%, rgba(220,255,74,0.07) 0%, transparent 70%),
+    repeating-linear-gradient(180deg, transparent 0px, transparent 39px, var(--hair) 39px, var(--hair) 40px);
+  background-attachment:fixed;
+}
+#app{
+  max-width:480px;
+  margin:0 auto;
+  padding:0 0 120px 0;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-left:max(12px, env(safe-area-inset-left,0px));
+  padding-right:max(12px, env(safe-area-inset-right,0px));
+}
+
+/* HEADER */
+.header{
+  padding:20px 0 12px;
+  position:sticky;
+  top:0;
+  background:var(--bg);
+  background-image:radial-gradient(ellipse 70% 30% at 50% 0%, rgba(220,255,74,0.07) 0%, transparent 70%);
+  z-index:50;
+  border-bottom:1px solid var(--hair);
+  padding-top:calc(env(safe-area-inset-top,0px) + 14px);
+}
+.header-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.header-left{}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.18em;
+  color:var(--dim);
+  text-transform:uppercase;
+}
+.title{
+  font-family:var(--font-head);
+  font-size:28px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  line-height:1;
+  color:var(--text);
+}
+.title span{color:var(--lime);}
+.header-date{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--dim);
+  margin-top:3px;
+}
+.edit-btn{
+  flex-shrink:0;
+  background:transparent;
+  border:1px solid var(--hair);
+  color:var(--dim);
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:6px 12px;
+  border-radius:6px;
+  cursor:pointer;
+  transition:all 0.15s;
+}
+.edit-btn.active{
+  border-color:var(--amber);
+  color:var(--amber);
+  background:rgba(255,180,84,0.1);
+}
+.edit-btn:hover{opacity:0.8;}
+
+/* AMBER BANNER */
+.amber-banner{
+  margin:10px 0 0;
+  padding:8px 12px;
+  background:rgba(255,180,84,0.1);
+  border:1px solid rgba(255,180,84,0.3);
+  border-radius:8px;
+  font-size:12px;
+  color:var(--amber);
+  line-height:1.5;
+}
+
+/* SCOPE TOGGLE */
+.scope-row{
+  display:flex;
+  gap:6px;
+  padding:12px 0 8px;
+}
+.scope-btn{
+  flex:1;
+  background:var(--panel);
+  border:1px solid var(--hair);
+  color:var(--dim);
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:500;
+  padding:8px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all 0.15s;
+  text-align:center;
+}
+.scope-btn.active{
+  background:var(--panel2);
+  border-color:var(--lime);
+  color:var(--lime);
+}
+
+/* CONDITION FILTER */
+.cond-row{
+  display:flex;
+  gap:5px;
+  padding:0 0 12px;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.cond-row::-webkit-scrollbar{display:none;}
+.cond-btn{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:var(--panel);
+  border:1px solid var(--hair);
+  color:var(--dim);
+  font-family:var(--font-body);
+  font-size:12px;
+  font-weight:500;
+  padding:6px 10px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:all 0.15s;
+  white-space:nowrap;
+}
+.cond-btn.active{
+  background:var(--panel2);
+  border-color:rgba(255,255,255,0.25);
+  color:var(--text);
+}
+.cond-dot{
+  width:8px;height:8px;
+  border-radius:50%;
+  display:inline-block;
+  flex-shrink:0;
+}
+
+/* WEDGE CARDS */
+.cards{display:flex;flex-direction:column;gap:10px;padding:4px 0;}
+.wedge-card{
+  background:var(--panel);
+  border:1px solid var(--hair);
+  border-radius:12px;
+  overflow:hidden;
+  transition:border-color 0.15s;
+}
+.wedge-card.expanded{border-color:rgba(255,255,255,0.18);}
+.card-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 14px 10px;
+}
+.card-wedge-name{
+  font-family:var(--font-head);
+  font-size:18px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  color:var(--text);
+}
+.card-loft{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--dim);
+  margin-left:6px;
+}
+.card-columns{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  border-top:1px solid var(--hair);
+}
+.col-divider{width:1px;background:var(--hair);margin:8px 0;}
+.card-col{
+  padding:10px 14px 12px;
+  cursor:pointer;
+  transition:background 0.15s;
+  position:relative;
+}
+.card-col:first-child{border-right:1px solid var(--hair);}
+.card-col.selected{background:var(--panel2);}
+.card-col.selected-full{background:rgba(220,255,74,0.05);}
+.card-col.selected-half{background:rgba(82,230,198,0.05);}
+.col-label{
+  font-family:var(--font-mono);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.col-label.full{color:var(--lime);}
+.col-label.half{color:var(--teal);}
+.col-avg{
+  font-family:var(--font-mono);
+  font-size:32px;
+  font-weight:700;
+  line-height:1;
+  color:var(--text);
+}
+.col-avg.empty{color:var(--dim);font-size:28px;}
+.col-meta{
+  font-family:var(--font-mono);
+  font-size:10px;
+  color:var(--dim);
+  margin-top:3px;
+}
+.selected-indicator{
+  position:absolute;
+  top:6px;right:8px;
+  width:6px;height:6px;
+  border-radius:50%;
+}
+.selected-indicator.full{background:var(--lime);}
+.selected-indicator.half{background:var(--teal);}
+
+/* SHOT CHIPS */
+.shot-chips-wrap{
+  padding:8px 12px 12px;
+  border-top:1px solid var(--hair);
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.shot-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  background:var(--panel2);
+  border:1px solid var(--hair);
+  border-radius:20px;
+  padding:4px 8px 4px 6px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--text);
+}
+.chip-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.chip-gps{color:var(--blue);font-size:11px;margin-left:1px;}
+.chip-del{
+  background:none;
+  border:none;
+  color:var(--dim);
+  cursor:pointer;
+  font-size:14px;
+  line-height:1;
+  padding:0 0 0 2px;
+  margin-left:1px;
+  display:flex;align-items:center;
+}
+.chip-del:hover{color:var(--red);}
+.chip-mode-label{
+  font-size:9px;
+  color:var(--dim);
+  margin-left:1px;
+}
+
+/* EDIT MODE */
+.edit-panel{
+  background:var(--panel);
+  border:1px solid var(--hair);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:10px;
+}
+.edit-panel-title{
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--dim);
+  margin-bottom:10px;
+}
+.edit-wedge-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+}
+.edit-wedge-row input{
+  background:var(--panel2);
+  border:1px solid var(--hair);
+  border-radius:6px;
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:14px;
+  padding:6px 10px;
+}
+.edit-wedge-row input:focus{
+  outline:none;
+  border-color:rgba(255,255,255,0.25);
+}
+.input-name{flex:1;min-width:60px;}
+.input-loft{width:72px;}
+.remove-wedge-btn{
+  background:none;
+  border:none;
+  color:var(--dim);
+  cursor:pointer;
+  font-size:18px;
+  padding:4px;
+  border-radius:4px;
+  flex-shrink:0;
+}
+.remove-wedge-btn:hover{color:var(--red);}
+.add-wedge-btn{
+  background:transparent;
+  border:1px dashed rgba(255,255,255,0.2);
+  color:var(--dim);
+  font-family:var(--font-body);
+  font-size:13px;
+  padding:8px;
+  border-radius:8px;
+  cursor:pointer;
+  width:100%;
+  margin-top:4px;
+}
+.add-wedge-btn:hover{border-color:var(--lime);color:var(--lime);}
+.clear-btn{
+  background:rgba(255,122,107,0.1);
+  border:1px solid rgba(255,122,107,0.3);
+  color:var(--red);
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:8px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  margin-top:10px;
+  width:100%;
+}
+.clear-btn:hover{background:rgba(255,122,107,0.2);}
+
+/* GPS PANEL */
+.gps-toggle-btn{
+  width:100%;
+  background:var(--panel);
+  border:1px solid rgba(124,198,255,0.35);
+  color:var(--blue);
+  font-family:var(--font-mono);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:0.06em;
+  padding:12px;
+  border-radius:10px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin-bottom:10px;
+  transition:all 0.15s;
+}
+.gps-toggle-btn.open{
+  border-color:var(--blue);
+  background:rgba(124,198,255,0.08);
+}
+.gps-toggle-btn:hover{opacity:0.85;}
+.gps-panel{
+  background:var(--panel);
+  border:1px solid rgba(124,198,255,0.2);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:10px;
+}
+.gps-status-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  background:var(--panel2);
+  border-radius:8px;
+  margin-bottom:10px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--dim);
+}
+.gps-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.gps-dot.green{background:var(--green);}
+.gps-dot.amber{background:var(--amber);}
+.gps-dot.red{background:var(--red);}
+.gps-dot.grey{background:var(--dim);}
+.gps-btn-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:10px;
+}
+.gps-mark-btn{
+  background:var(--panel2);
+  border:1px solid var(--hair);
+  color:var(--text);
+  font-family:var(--font-mono);
+  font-size:12px;
+  font-weight:600;
+  padding:10px 8px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all 0.15s;
+  text-align:center;
+}
+.gps-mark-btn:disabled{opacity:0.35;cursor:not-allowed;}
+.gps-mark-btn.marked{border-color:var(--green);color:var(--green);background:rgba(124,227,139,0.07);}
+.gps-result{
+  background:var(--panel2);
+  border:1px solid var(--hair);
+  border-radius:10px;
+  padding:14px;
+  margin-bottom:10px;
+  text-align:center;
+}
+.gps-result-yds{
+  font-family:var(--font-mono);
+  font-size:44px;
+  font-weight:700;
+  color:var(--blue);
+  line-height:1;
+}
+.gps-result-err{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--dim);
+  margin-top:4px;
+}
+.gps-result-meta{
+  font-size:12px;
+  color:var(--dim);
+  margin-top:6px;
+  line-height:1.5;
+}
+.gps-result-btns{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+.gps-save-btn{
+  flex:1;
+  background:var(--blue);
+  border:none;
+  color:#0b120e;
+  font-family:var(--font-mono);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.06em;
+  padding:10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.gps-reset-btn{
+  background:transparent;
+  border:1px solid var(--hair);
+  color:var(--dim);
+  font-family:var(--font-mono);
+  font-size:12px;
+  padding:10px 14px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.gps-note{
+  font-size:11px;
+  color:var(--dim);
+  line-height:1.5;
+  margin-top:8px;
+  padding:8px 10px;
+  background:var(--panel2);
+  border-radius:6px;
+  border-left:2px solid var(--blue);
+}
+
+/* STICKY ENTRY BAR */
+.entry-bar{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:480px;
+  background:var(--panel);
+  border-top:1px solid var(--hair);
+  padding:10px 14px;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  z-index:100;
+  backdrop-filter:blur(10px);
+}
+.entry-target{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--dim);
+  margin-bottom:8px;
+  text-align:center;
+  letter-spacing:0.04em;
+}
+.entry-target span.et-wedge{color:var(--text);}
+.entry-target span.et-mode-full{color:var(--lime);}
+.entry-target span.et-mode-half{color:var(--teal);}
+.entry-cond-row{
+  display:flex;
+  gap:5px;
+  margin-bottom:8px;
+}
+.entry-cond-btn{
+  flex:1;
+  background:var(--panel2);
+  border:1px solid var(--hair);
+  color:var(--dim);
+  font-family:var(--font-body);
+  font-size:11px;
+  font-weight:500;
+  padding:6px 4px;
+  border-radius:8px;
+  cursor:pointer;
+  text-align:center;
+  transition:all 0.15s;
+  white-space:nowrap;
+}
+.entry-cond-btn.calm-active{border-color:rgba(159,184,168,0.5);color:#9fb8a8;background:rgba(159,184,168,0.07);}
+.entry-cond-btn.wind-active{border-color:rgba(255,180,84,0.5);color:var(--amber);background:rgba(255,180,84,0.07);}
+.entry-cond-btn.down-active{border-color:rgba(124,198,255,0.5);color:var(--blue);background:rgba(124,198,255,0.07);}
+.entry-input-row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.yards-input{
+  flex:1;
+  background:var(--panel2);
+  border:1px solid var(--hair);
+  border-radius:8px;
+  color:var(--text);
+  font-family:var(--font-mono);
+  font-size:22px;
+  font-weight:600;
+  padding:8px 12px;
+  text-align:center;
+}
+.yards-input:focus{
+  outline:none;
+  border-color:rgba(255,255,255,0.3);
+}
+.add-shot-btn{
+  background:var(--lime);
+  border:none;
+  color:#0b120e;
+  font-family:var(--font-mono);
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:0.06em;
+  padding:10px 18px;
+  border-radius:8px;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:all 0.15s;
+}
+.add-shot-btn.half{background:var(--teal);}
+.add-shot-btn:active{opacity:0.8;}
+
+/* SECTION LABEL */
+.section-label{
+  font-family:var(--font-mono);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--dim);
+  padding:12px 0 6px;
+}
+
+/* No-target state */
+.no-target{
+  text-align:center;
+  color:var(--dim);
+  font-size:13px;
+  padding:10px 0 4px;
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <div class="header-top">
+      <div class="header-left">
+        <div class="eyebrow">Range Log</div>
+        <div class="title">Wedge <span>Book</span></div>
+        <div class="header-date" id="headerDate"></div>
+      </div>
+      <button class="edit-btn" id="editBtn" onclick="toggleEdit()">Edit</button>
+    </div>
+    <div class="amber-banner">
+      ⚠ Baseline tagged <strong>Into wind</strong> — 31 May. Use the condition filter to compare against calm days, so wind and calm never blend into the same average.
+    </div>
+  </div>
+
+  <div style="padding:0 0 8px;">
+    <div class="scope-row">
+      <button class="scope-btn" id="scopeToday" onclick="setScope('today')">Today</button>
+      <button class="scope-btn active" id="scopeAll" onclick="setScope('all')">All time</button>
+    </div>
+    <div class="cond-row" id="condRow"></div>
+  </div>
+
+  <!-- GPS section -->
+  <button class="gps-toggle-btn" id="gpsToggleBtn" onclick="toggleGPS()">
+    <span>◎</span> Measure a Shot · GPS
+  </button>
+  <div class="gps-panel" id="gpsPanel" style="display:none;"></div>
+
+  <!-- Edit panel -->
+  <div class="edit-panel" id="editPanel" style="display:none;"></div>
+
+  <div class="section-label">Wedge Averages</div>
+  <div class="cards" id="cardsEl"></div>
+</div>
+
+<!-- Sticky entry bar -->
+<div class="entry-bar" id="entryBar">
+  <div class="entry-target" id="entryTarget"></div>
+  <div class="entry-cond-row" id="entryConds"></div>
+  <div class="entry-input-row">
+    <input class="yards-input" id="yardsInput" type="number" inputmode="decimal" placeholder="yds" min="1" max="400" autocomplete="off">
+    <button class="add-shot-btn" id="addBtn" onclick="addShot()">ADD</button>
+  </div>
+</div>
+
+<script>
+'use strict';
+// ─── CONSTANTS ───────────────────────────────────────────────────────────────
+const STORE_KEY = 'wedge-book:v3';
+const CONDITIONS = {
+  calm:  { label:'Calm',        color:'#9fb8a8' },
+  wind:  { label:'Into wind',   color:'#ffb454' },
+  down:  { label:'Downwind',    color:'#7cc6ff' },
+};
+
+// ─── SEED DATA ────────────────────────────────────────────────────────────────
+function buildSeed() {
+  const wedges = [
+    { id:'pw',   name:'PW',  loft:46 },
+    { id:'w50',  name:'50°', loft:50 },
+    { id:'w52',  name:'52°', loft:52 },
+    { id:'w56',  name:'56°', loft:56 },
+    { id:'w60',  name:'60°', loft:60 },
+  ];
+
+  const sess1Base = new Date('2026-05-31T11:00:00').getTime();
+  const sess2Base = new Date('2026-06-06T11:00:00').getTime();
+  let sid = 1;
+
+  const s1shots = [
+    ['pw','full',109], ['pw','half',79], ['pw','half',88],
+    ['w50','full',97], ['w50','full',98], ['w50','full',101], ['w50','full',101],
+    ['w50','half',84],
+    ['w52','full',90], ['w52','full',94], ['w52','full',93],
+    ['w52','half',68],
+    ['w56','full',76], ['w56','half',56],
+    ['w60','full',64], ['w60','half',50],
+  ];
+
+  const s2shots = [
+    ['w50','full',105],
+    ['w52','full',87], ['w52','full',89], ['w52','full',90],
+    ['w56','full',72], ['w56','full',74], ['w56','full',76],
+    ['w50','half',82], ['w50','half',81], ['w50','half',80], ['w50','half',87],
+    ['w52','half',77], ['w52','half',78], ['w52','half',73],
+    ['w56','half',53], ['w56','half',58], ['w56','half',55],
+    ['w60','half',43], ['w60','half',41], ['w60','half',47],
+  ];
+
+  const shots = [];
+  s1shots.forEach(([wedgeId, mode, yards], i) => {
+    shots.push({
+      id: 's1-' + (sid++),
+      wedgeId, mode, yards,
+      ts: sess1Base + i * 60000,
+      cond: 'wind',
+      gps: false,
+    });
+  });
+  s2shots.forEach(([wedgeId, mode, yards], i) => {
+    shots.push({
+      id: 's2-' + (sid++),
+      wedgeId, mode, yards,
+      ts: sess2Base + i * 60000,
+      cond: 'calm',
+      gps: false,
+    });
+  });
+
+  return { wedges, shots };
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let state = {
+  wedges: [],
+  shots: [],
+  scope: 'all',       // 'today' | 'all'
+  condFilter: 'all',  // 'all' | 'calm' | 'wind' | 'down'
+  activeWedge: null,  // wedge id
+  activeMode: null,   // 'full' | 'half'
+  editMode: false,
+  entryCond: 'calm',
+  gpsOpen: false,
+};
+
+// GPS internal
+let watchId = null;
+let gpsPos = null;
+let gpsStart = null;
+let gpsEnd = null;
+let gpsResultYds = null;
+let gpsResultErr = null;
+let gpsStatusMsg = 'Waiting for GPS…';
+let gpsStatusClass = 'grey';
+let gpsError = null;
+
+// ─── PERSISTENCE ─────────────────────────────────────────────────────────────
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      state.wedges = data.wedges || [];
+      state.shots  = data.shots  || [];
+      return;
+    }
+  } catch(e) {}
+  const seed = buildSeed();
+  state.wedges = seed.wedges;
+  state.shots  = seed.shots;
+  save();
+}
+
+function save() {
+  localStorage.setItem(STORE_KEY, JSON.stringify({ wedges: state.wedges, shots: state.shots }));
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function todayRange() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  return [start, start + 86400000];
+}
+
+function filteredShots(wedgeId, mode) {
+  let s = state.shots.filter(sh => sh.wedgeId === wedgeId && sh.mode === mode);
+  if (state.scope === 'today') {
+    const [a, b] = todayRange();
+    s = s.filter(sh => sh.ts >= a && sh.ts < b);
+  }
+  if (state.condFilter !== 'all') {
+    s = s.filter(sh => sh.cond === state.condFilter);
+  }
+  return s;
+}
+
+function avg(arr) {
+  if (!arr.length) return null;
+  return Math.round(arr.reduce((a,b)=>a+b,0) / arr.length);
+}
+
+function haversineMetres(lat1,lon1,lat2,lon2) {
+  const R = 6371000;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 +
+            Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function mToYards(m) { return m * 1.09361; }
+
+// ─── SCOPE / CONDITION ───────────────────────────────────────────────────────
+function setScope(s) {
+  state.scope = s;
+  document.getElementById('scopeToday').classList.toggle('active', s==='today');
+  document.getElementById('scopeAll').classList.toggle('active', s==='all');
+  render();
+}
+
+function setCondFilter(c) {
+  state.condFilter = c;
+  renderCondRow();
+  renderCards();
+}
+
+function setEntryCond(c) {
+  state.entryCond = c;
+  renderEntryBar();
+}
+
+// ─── TOGGLE EDIT ─────────────────────────────────────────────────────────────
+function toggleEdit() {
+  state.editMode = !state.editMode;
+  document.getElementById('editBtn').classList.toggle('active', state.editMode);
+  document.getElementById('editBtn').textContent = state.editMode ? 'Done' : 'Edit';
+  renderEditPanel();
+  renderCards();
+}
+
+// ─── SHOT CRUD ───────────────────────────────────────────────────────────────
+function addShot(overrideYards, gps) {
+  const wig = state.activeWedge;
+  const mode = state.activeMode;
+  if (!wig || !mode) return;
+
+  let yards;
+  if (overrideYards !== undefined) {
+    yards = overrideYards;
+  } else {
+    const inp = document.getElementById('yardsInput');
+    yards = parseFloat(inp.value);
+    if (!isFinite(yards) || yards <= 0) { inp.focus(); return; }
+    inp.value = '';
+  }
+
+  const shot = {
+    id: uid(),
+    wedgeId: wig,
+    mode,
+    yards: Math.round(yards),
+    ts: Date.now(),
+    cond: state.entryCond,
+    gps: gps || false,
+  };
+  state.shots.push(shot);
+  save();
+  renderCards();
+}
+
+function deleteShot(id) {
+  state.shots = state.shots.filter(s => s.id !== id);
+  save();
+  renderCards();
+}
+
+// ─── GPS ─────────────────────────────────────────────────────────────────────
+function toggleGPS() {
+  state.gpsOpen = !state.gpsOpen;
+  if (state.gpsOpen) {
+    startGPS();
+  } else {
+    stopGPS();
+  }
+  renderGPS();
+}
+
+function startGPS() {
+  gpsPos = null; gpsStart = null; gpsEnd = null;
+  gpsResultYds = null; gpsResultErr = null;
+  gpsError = null;
+  gpsStatusMsg = 'Acquiring GPS…';
+  gpsStatusClass = 'grey';
+
+  if (!navigator.geolocation) {
+    gpsError = 'GPS not supported on this browser.';
+    renderGPS();
+    return;
+  }
+
+  watchId = navigator.geolocation.watchPosition(
+    pos => {
+      gpsPos = pos;
+      gpsError = null;
+      const acc = pos.coords.accuracy;
+      if (acc <= 8) {
+        gpsStatusMsg = `GPS locked · ±${Math.round(acc)}m (good)`;
+        gpsStatusClass = 'green';
+      } else if (acc <= 15) {
+        gpsStatusMsg = `GPS locked · ±${Math.round(acc)}m (ok)`;
+        gpsStatusClass = 'amber';
+      } else {
+        gpsStatusMsg = `GPS locked · ±${Math.round(acc)}m — weak, wait`;
+        gpsStatusClass = 'red';
+      }
+      renderGPS();
+    },
+    err => {
+      if (err.code === 1) {
+        gpsError = 'Location blocked — allow access in Settings.';
+      } else {
+        gpsError = 'No GPS fix — check signal.';
+      }
+      gpsStatusMsg = gpsError;
+      gpsStatusClass = 'red';
+      renderGPS();
+    },
+    { enableHighAccuracy: true, maximumAge: 1000, timeout: 20000 }
+  );
+}
+
+function stopGPS() {
+  if (watchId !== null) {
+    navigator.geolocation.clearWatch(watchId);
+    watchId = null;
+  }
+}
+
+function markBall() {
+  if (!gpsPos) return;
+  gpsStart = { lat: gpsPos.coords.latitude, lon: gpsPos.coords.longitude, acc: gpsPos.coords.accuracy };
+  gpsEnd = null;
+  gpsResultYds = null;
+  gpsResultErr = null;
+  renderGPS();
+}
+
+function markLanding() {
+  if (!gpsPos || !gpsStart) return;
+  gpsEnd = { lat: gpsPos.coords.latitude, lon: gpsPos.coords.longitude, acc: gpsPos.coords.accuracy };
+  const metres = haversineMetres(gpsStart.lat, gpsStart.lon, gpsEnd.lat, gpsEnd.lon);
+  gpsResultYds = Math.round(mToYards(metres));
+  gpsResultErr = Math.round(mToYards(Math.sqrt(gpsStart.acc**2 + gpsEnd.acc**2)));
+  renderGPS();
+}
+
+function saveGPSShot() {
+  if (gpsResultYds === null) return;
+  addShot(gpsResultYds, true);
+  gpsStart = null; gpsEnd = null; gpsResultYds = null; gpsResultErr = null;
+  renderGPS();
+}
+
+function resetGPS() {
+  gpsStart = null; gpsEnd = null; gpsResultYds = null; gpsResultErr = null;
+  renderGPS();
+}
+
+// ─── EDIT ACTIONS ─────────────────────────────────────────────────────────────
+function addWedge() {
+  const w = { id: uid(), name: 'New', loft: 0 };
+  state.wedges.push(w);
+  save();
+  renderEditPanel();
+  renderCards();
+}
+
+function removeWedge(id) {
+  if (!confirm('Remove this wedge and all its shots?')) return;
+  state.wedges = state.wedges.filter(w => w.id !== id);
+  state.shots  = state.shots.filter(s => s.wedgeId !== id);
+  if (state.activeWedge === id) { state.activeWedge = null; state.activeMode = null; }
+  save();
+  renderEditPanel();
+  renderCards();
+  renderEntryBar();
+}
+
+function updateWedgeName(id, val) {
+  const w = state.wedges.find(w => w.id === id);
+  if (w) { w.name = val; save(); renderCards(); }
+}
+
+function updateWedgeLoft(id, val) {
+  const w = state.wedges.find(w => w.id === id);
+  if (w) { w.loft = parseFloat(val) || 0; save(); renderCards(); }
+}
+
+function clearShots() {
+  const label = state.scope === 'today' ? 'today\'s shots' : 'ALL shots';
+  if (!confirm(`Clear ${label}? This cannot be undone.`)) return;
+  if (state.scope === 'today') {
+    const [a, b] = todayRange();
+    state.shots = state.shots.filter(s => !(s.ts >= a && s.ts < b));
+  } else {
+    state.shots = [];
+  }
+  save();
+  renderCards();
+}
+
+// ─── SELECT TARGET ───────────────────────────────────────────────────────────
+function selectTarget(wedgeId, mode) {
+  state.activeWedge = wedgeId;
+  state.activeMode  = mode;
+  renderCards();
+  renderEntryBar();
+  // scroll entry bar visible
+  setTimeout(() => document.getElementById('yardsInput').focus(), 80);
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function render() {
+  renderCondRow();
+  renderCards();
+  renderEntryBar();
+  renderEditPanel();
+  renderGPS();
+}
+
+function renderCondRow() {
+  const el = document.getElementById('condRow');
+  const items = [
+    { key:'all', label:'All conditions', color:'var(--dim)' },
+    { key:'calm', label: CONDITIONS.calm.label, color: CONDITIONS.calm.color },
+    { key:'wind', label: CONDITIONS.wind.label, color: CONDITIONS.wind.color },
+    { key:'down', label: CONDITIONS.down.label, color: CONDITIONS.down.color },
+  ];
+  el.innerHTML = items.map(item => `
+    <button class="cond-btn${state.condFilter===item.key?' active':''}"
+            onclick="setCondFilter('${item.key}')">
+      <span class="cond-dot" style="background:${item.color}"></span>
+      ${item.label}
+    </button>
+  `).join('');
+}
+
+function renderCards() {
+  const el = document.getElementById('cardsEl');
+  el.innerHTML = state.wedges.map(w => renderWedgeCard(w)).join('');
+}
+
+function renderWedgeCard(w) {
+  const isActive = state.activeWedge === w.id;
+
+  function colHtml(mode) {
+    const shots = filteredShots(w.id, mode);
+    const yards = shots.map(s => s.yards);
+    const a = avg(yards);
+    const mn = yards.length ? Math.min(...yards) : null;
+    const mx = yards.length ? Math.max(...yards) : null;
+    const isSelected = isActive && state.activeMode === mode;
+    const colorClass = mode === 'full' ? 'full' : 'half';
+    const colSelClass = isSelected ? ` selected-${mode}` : '';
+
+    let shotChips = '';
+    if (isActive && state.activeMode === mode) {
+      // show chips for this column — all shots unfiltered by scope/cond for full history
+      const allShots = state.shots
+        .filter(s => s.wedgeId === w.id && s.mode === mode)
+        .sort((a,b) => b.ts - a.ts);
+      if (allShots.length) {
+        shotChips = allShots.map(s => {
+          const c = CONDITIONS[s.cond] || CONDITIONS.calm;
+          return `<span class="shot-chip">
+            <span class="cond-dot chip-dot" style="background:${c.color}"></span>
+            ${s.yards}<span class="chip-mode-label">y</span>
+            ${s.gps ? '<span class="chip-gps">◎</span>' : ''}
+            <button class="chip-del" onclick="deleteShot('${s.id}')">×</button>
+          </span>`;
+        }).join('');
+      } else {
+        shotChips = `<span style="font-size:12px;color:var(--dim);">No shots yet</span>`;
+      }
+    }
+
+    return `
+      <div class="card-col${colSelClass}" onclick="selectTarget('${w.id}','${mode}')">
+        ${isSelected ? `<div class="selected-indicator ${colorClass}"></div>` : ''}
+        <div class="col-label ${colorClass}">${mode==='full'?'Full · Stock':'50% Swing'}</div>
+        <div class="col-avg${a===null?' empty':''}">${a !== null ? a : '—'}</div>
+        <div class="col-meta">${yards.length ? `${yards.length} shot${yards.length!==1?'s':''} · ${mn}–${mx}` : 'no data'}</div>
+        ${shotChips ? `<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px;">${shotChips}</div>` : ''}
+      </div>`;
+  }
+
+  return `
+    <div class="wedge-card${isActive?' expanded':''}">
+      <div class="card-header">
+        <div>
+          <span class="card-wedge-name">${esc(w.name)}</span>
+          <span class="card-loft">${w.loft ? w.loft+'°' : ''}</span>
+        </div>
+      </div>
+      <div class="card-columns">
+        ${colHtml('full')}
+        ${colHtml('half')}
+      </div>
+    </div>`;
+}
+
+function renderEntryBar() {
+  const w = state.wedges.find(w => w.id === state.activeWedge);
+  const mode = state.activeMode;
+
+  const targetEl = document.getElementById('entryTarget');
+  if (w && mode) {
+    targetEl.innerHTML = `Logging to <span class="et-wedge">${esc(w.name)}</span> · <span class="et-mode-${mode}">${mode==='full'?'Full':'50%'}</span>`;
+  } else {
+    targetEl.innerHTML = `<span style="color:var(--dim)">Tap a wedge column to start logging</span>`;
+  }
+
+  const condEl = document.getElementById('entryConds');
+  condEl.innerHTML = [
+    { key:'calm', label:'Calm' },
+    { key:'wind', label:'Into wind' },
+    { key:'down', label:'Downwind' },
+  ].map(c => `
+    <button class="entry-cond-btn${state.entryCond===c.key?' '+c.key+'-active':''}"
+            onclick="setEntryCond('${c.key}')">${c.label}</button>
+  `).join('');
+
+  const addBtn = document.getElementById('addBtn');
+  addBtn.classList.toggle('half', mode === 'half');
+}
+
+function renderEditPanel() {
+  const el = document.getElementById('editPanel');
+  el.style.display = state.editMode ? 'block' : 'none';
+  if (!state.editMode) return;
+
+  const rows = state.wedges.map(w => `
+    <div class="edit-wedge-row">
+      <input class="input-name" value="${esc(w.name)}" placeholder="Name"
+             onchange="updateWedgeName('${w.id}',this.value)" oninput="updateWedgeName('${w.id}',this.value)">
+      <input class="input-loft" value="${w.loft}" placeholder="Loft" inputmode="decimal"
+             onchange="updateWedgeLoft('${w.id}',this.value)" oninput="updateWedgeLoft('${w.id}',this.value)">
+      <button class="remove-wedge-btn" onclick="removeWedge('${w.id}')">×</button>
+    </div>
+  `).join('');
+
+  const scopeLabel = state.scope === 'today' ? 'Today\'s Shots' : 'All Shots';
+
+  el.innerHTML = `
+    <div class="edit-panel-title">Edit Wedges</div>
+    ${rows}
+    <button class="add-wedge-btn" onclick="addWedge()">+ Add Wedge</button>
+    <button class="clear-btn" onclick="clearShots()">Clear ${scopeLabel}</button>
+  `;
+}
+
+function renderGPS() {
+  const btn = document.getElementById('gpsToggleBtn');
+  btn.classList.toggle('open', state.gpsOpen);
+
+  const panel = document.getElementById('gpsPanel');
+  panel.style.display = state.gpsOpen ? 'block' : 'none';
+
+  if (!state.gpsOpen) return;
+
+  const w = state.wedges.find(w => w.id === state.activeWedge);
+  const modeName = state.activeMode === 'full' ? 'Full' : state.activeMode === 'half' ? '50%' : '—';
+  const condName = CONDITIONS[state.entryCond]?.label || 'Calm';
+
+  const canMark = !!gpsPos && !gpsError;
+  const canMarkLanding = canMark && !!gpsStart;
+
+  let resultHtml = '';
+  if (gpsResultYds !== null) {
+    const saveTo = w ? `${esc(w.name)} · ${modeName} · ${condName}` : '(no target selected)';
+    resultHtml = `
+      <div class="gps-result">
+        <div class="gps-result-yds">${gpsResultYds}</div>
+        <div class="gps-result-err">± ~${gpsResultErr} yds</div>
+        <div class="gps-result-meta">total distance · saving to ${saveTo}</div>
+        <div class="gps-result-btns">
+          <button class="gps-save-btn" onclick="saveGPSShot()" ${!w?'disabled':''}>Save to log</button>
+          <button class="gps-reset-btn" onclick="resetGPS()">Reset</button>
+        </div>
+      </div>`;
+  }
+
+  panel.innerHTML = `
+    <div class="gps-status-row">
+      <span class="gps-dot ${gpsStatusClass}"></span>
+      <span>${gpsStatusMsg}</span>
+    </div>
+    <div class="gps-btn-row">
+      <button class="gps-mark-btn${gpsStart?' marked':''}" onclick="markBall()" ${!canMark?'disabled':''}>
+        ① Mark Ball ${gpsStart ? '✓' : ''}
+      </button>
+      <button class="gps-mark-btn${gpsEnd?' marked':''}" onclick="markLanding()" ${!canMarkLanding?'disabled':''}>
+        ② Mark Landing ${gpsEnd ? '✓' : ''}
+      </button>
+    </div>
+    ${resultHtml}
+    <div class="gps-note">
+      GPS measures <strong>total distance</strong> (carry + roll) and will read longer than range carry. Phone GPS is typically ±a few yards per point.
+    </div>
+  `;
+}
+
+// ─── UTILS ───────────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── ENTER KEY ───────────────────────────────────────────────────────────────
+document.getElementById('yardsInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addShot();
+});
+
+// ─── HEADER DATE ─────────────────────────────────────────────────────────────
+function renderDate() {
+  const d = new Date();
+  document.getElementById('headerDate').textContent = d.toLocaleDateString('en-GB', {
+    weekday:'long', day:'numeric', month:'long', year:'numeric'
+  });
+}
+
+// ─── BOOT ─────────────────────────────────────────────────────────────────────
+load();
+renderDate();
+render();
+</script>
+</body>
+</html>
