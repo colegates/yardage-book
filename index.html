@@ -633,6 +633,66 @@ body{
   font-size:13px;
   padding:10px 0 4px;
 }
+
+/* EXPORT / IMPORT */
+.data-section-title{
+  font-family:var(--font-mono);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--dim);
+  margin:14px 0 8px;
+  padding-top:12px;
+  border-top:1px solid var(--hair);
+}
+.data-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.export-btn{
+  background:rgba(220,255,74,0.08);
+  border:1px solid rgba(220,255,74,0.3);
+  color:var(--lime);
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  padding:11px 8px;
+  border-radius:8px;
+  cursor:pointer;
+  text-align:center;
+  transition:background 0.15s;
+}
+.export-btn:hover{background:rgba(220,255,74,0.14);}
+.import-btn{
+  background:rgba(82,230,198,0.08);
+  border:1px solid rgba(82,230,198,0.3);
+  color:var(--teal);
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  padding:11px 8px;
+  border-radius:8px;
+  cursor:pointer;
+  text-align:center;
+  transition:background 0.15s;
+}
+.import-btn:hover{background:rgba(82,230,198,0.14);}
+.data-note{
+  font-size:11px;
+  color:var(--dim);
+  line-height:1.5;
+  margin-top:8px;
+  padding:8px 10px;
+  background:var(--panel2);
+  border-radius:6px;
+  border-left:2px solid var(--lime);
+}
 </style>
 </head>
 <body>
@@ -667,6 +727,8 @@ body{
 
   <!-- Edit panel -->
   <div class="edit-panel" id="editPanel" style="display:none;"></div>
+  <!-- Hidden import file input -->
+  <input type="file" id="importFileInput" accept=".json,application/json" style="display:none" onchange="handleImportFile(this)">
 
   <div class="section-label">Wedge Averages</div>
   <div class="cards" id="cardsEl"></div>
@@ -1032,6 +1094,49 @@ function clearShots() {
   renderCards();
 }
 
+// ─── EXPORT / IMPORT ─────────────────────────────────────────────────────────
+function exportData() {
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    appVersion: 'wedge-book:v3',
+    wedges: state.wedges,
+    shots: state.shots,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `wedge-book-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function handleImportFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  input.value = '';
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!Array.isArray(data.wedges) || !Array.isArray(data.shots)) {
+        alert('Invalid backup file — missing wedges or shots.');
+        return;
+      }
+      if (!confirm(`Import ${data.shots.length} shots across ${data.wedges.length} wedges?\n\nThis will REPLACE all current data and cannot be undone.`)) return;
+      state.wedges = data.wedges;
+      state.shots  = data.shots;
+      save();
+      render();
+    } catch(err) {
+      alert('Could not read file — is it a valid Wedge Book JSON backup?');
+    }
+  };
+  reader.readAsText(file);
+}
+
 // ─── SELECT TARGET ───────────────────────────────────────────────────────────
 function selectTarget(wedgeId, mode) {
   state.activeWedge = wedgeId;
@@ -1179,6 +1284,14 @@ function renderEditPanel() {
     ${rows}
     <button class="add-wedge-btn" onclick="addWedge()">+ Add Wedge</button>
     <button class="clear-btn" onclick="clearShots()">Clear ${scopeLabel}</button>
+    <div class="data-section-title">Backup &amp; Restore</div>
+    <div class="data-row">
+      <button class="export-btn" onclick="exportData()">⬇ Export JSON</button>
+      <button class="import-btn" onclick="document.getElementById('importFileInput').click()">⬆ Import JSON</button>
+    </div>
+    <div class="data-note">
+      Export saves all wedges + shots as a JSON file. Send that file to your assistant to store a copy in the GitHub repo. To restore, tap Import and pick the file.
+    </div>
   `;
 }
 

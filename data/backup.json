@@ -1,0 +1,357 @@
+{
+  "exportedAt": "2026-06-07T00:00:00.000Z",
+  "appVersion": "wedge-book:v3",
+  "wedges": [
+    {
+      "id": "pw",
+      "name": "PW",
+      "loft": 46
+    },
+    {
+      "id": "w50",
+      "name": "50°",
+      "loft": 50
+    },
+    {
+      "id": "w52",
+      "name": "52°",
+      "loft": 52
+    },
+    {
+      "id": "w56",
+      "name": "56°",
+      "loft": 56
+    },
+    {
+      "id": "w60",
+      "name": "60°",
+      "loft": 60
+    }
+  ],
+  "shots": [
+    {
+      "id": "s1-1",
+      "wedgeId": "pw",
+      "mode": "full",
+      "yards": 109,
+      "ts": 1780225200000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-2",
+      "wedgeId": "pw",
+      "mode": "half",
+      "yards": 79,
+      "ts": 1780225260000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-3",
+      "wedgeId": "pw",
+      "mode": "half",
+      "yards": 88,
+      "ts": 1780225320000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-4",
+      "wedgeId": "w50",
+      "mode": "full",
+      "yards": 97,
+      "ts": 1780225380000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-5",
+      "wedgeId": "w50",
+      "mode": "full",
+      "yards": 98,
+      "ts": 1780225440000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-6",
+      "wedgeId": "w50",
+      "mode": "full",
+      "yards": 101,
+      "ts": 1780225500000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-7",
+      "wedgeId": "w50",
+      "mode": "full",
+      "yards": 101,
+      "ts": 1780225560000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-8",
+      "wedgeId": "w50",
+      "mode": "half",
+      "yards": 84,
+      "ts": 1780225620000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-9",
+      "wedgeId": "w52",
+      "mode": "full",
+      "yards": 90,
+      "ts": 1780225680000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-10",
+      "wedgeId": "w52",
+      "mode": "full",
+      "yards": 94,
+      "ts": 1780225740000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-11",
+      "wedgeId": "w52",
+      "mode": "full",
+      "yards": 93,
+      "ts": 1780225800000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-12",
+      "wedgeId": "w52",
+      "mode": "half",
+      "yards": 68,
+      "ts": 1780225860000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-13",
+      "wedgeId": "w56",
+      "mode": "full",
+      "yards": 76,
+      "ts": 1780225920000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-14",
+      "wedgeId": "w56",
+      "mode": "half",
+      "yards": 56,
+      "ts": 1780225980000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-15",
+      "wedgeId": "w60",
+      "mode": "full",
+      "yards": 64,
+      "ts": 1780226040000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s1-16",
+      "wedgeId": "w60",
+      "mode": "half",
+      "yards": 50,
+      "ts": 1780226100000,
+      "cond": "wind",
+      "gps": false
+    },
+    {
+      "id": "s2-17",
+      "wedgeId": "w50",
+      "mode": "full",
+      "yards": 105,
+      "ts": 1780743600000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-18",
+      "wedgeId": "w52",
+      "mode": "full",
+      "yards": 87,
+      "ts": 1780743660000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-19",
+      "wedgeId": "w52",
+      "mode": "full",
+      "yards": 89,
+      "ts": 1780743720000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-20",
+      "wedgeId": "w52",
+      "mode": "full",
+      "yards": 90,
+      "ts": 1780743780000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-21",
+      "wedgeId": "w56",
+      "mode": "full",
+      "yards": 72,
+      "ts": 1780743840000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-22",
+      "wedgeId": "w56",
+      "mode": "full",
+      "yards": 74,
+      "ts": 1780743900000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-23",
+      "wedgeId": "w56",
+      "mode": "full",
+      "yards": 76,
+      "ts": 1780743960000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-24",
+      "wedgeId": "w50",
+      "mode": "half",
+      "yards": 82,
+      "ts": 1780744020000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-25",
+      "wedgeId": "w50",
+      "mode": "half",
+      "yards": 81,
+      "ts": 1780744080000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-26",
+      "wedgeId": "w50",
+      "mode": "half",
+      "yards": 80,
+      "ts": 1780744140000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-27",
+      "wedgeId": "w50",
+      "mode": "half",
+      "yards": 87,
+      "ts": 1780744200000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-28",
+      "wedgeId": "w52",
+      "mode": "half",
+      "yards": 77,
+      "ts": 1780744260000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-29",
+      "wedgeId": "w52",
+      "mode": "half",
+      "yards": 78,
+      "ts": 1780744320000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-30",
+      "wedgeId": "w52",
+      "mode": "half",
+      "yards": 73,
+      "ts": 1780744380000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-31",
+      "wedgeId": "w56",
+      "mode": "half",
+      "yards": 53,
+      "ts": 1780744440000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-32",
+      "wedgeId": "w56",
+      "mode": "half",
+      "yards": 58,
+      "ts": 1780744500000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-33",
+      "wedgeId": "w56",
+      "mode": "half",
+      "yards": 55,
+      "ts": 1780744560000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-34",
+      "wedgeId": "w60",
+      "mode": "half",
+      "yards": 43,
+      "ts": 1780744620000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-35",
+      "wedgeId": "w60",
+      "mode": "half",
+      "yards": 41,
+      "ts": 1780744680000,
+      "cond": "calm",
+      "gps": false
+    },
+    {
+      "id": "s2-36",
+      "wedgeId": "w60",
+      "mode": "half",
+      "yards": 47,
+      "ts": 1780744740000,
+      "cond": "calm",
+      "gps": false
+    }
+  ]
+}
